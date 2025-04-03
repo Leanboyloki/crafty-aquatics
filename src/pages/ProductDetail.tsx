@@ -115,7 +115,7 @@ const ProductDetail = () => {
             </div>
             
             <p className="text-3xl font-bold text-aqua-600 mb-4">
-              ${product.price.toFixed(2)}
+              {product.currency || '₹'}{product.price.toFixed(2)}
             </p>
             
             <p className="text-gray-700 mb-6">{product.description}</p>

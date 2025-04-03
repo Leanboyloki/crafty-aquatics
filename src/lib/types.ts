@@ -14,6 +14,7 @@ export interface Product {
   image: string;
   category: 'fish' | 'plants' | 'equipment' | 'decoration';
   stock: number;
+  currency: string;
 }
 
 export interface CartItem {

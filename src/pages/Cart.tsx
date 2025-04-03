@@ -64,12 +64,12 @@ const Cart = () => {
                 <div className="space-y-3 mb-4">
                   <div className="flex justify-between">
                     <span className="text-gray-600">Subtotal</span>
-                    <span>${total.toFixed(2)}</span>
+                    <span>₹{total.toFixed(2)}</span>
                   </div>
                   
                   <div className="flex justify-between">
                     <span className="text-gray-600">Shipping</span>
-                    <span>{total >= 50 ? 'Free' : '$4.99'}</span>
+                    <span>{total >= 3000 ? 'Free' : '₹299'}</span>
                   </div>
                   
                   <Separator />
@@ -77,7 +77,7 @@ const Cart = () => {
                   <div className="flex justify-between font-bold">
                     <span>Total</span>
                     <span className="text-lg text-aqua-700">
-                      ${(total >= 50 ? total : total + 4.99).toFixed(2)}
+                      ₹{(total >= 3000 ? total : total + 299).toFixed(2)}
                     </span>
                   </div>
                 </div>
@@ -99,7 +99,7 @@ const Cart = () => {
                 </Button>
                 
                 <div className="mt-4 text-sm text-gray-500">
-                  <p>Free shipping on orders over $50.</p>
+                  <p>Free shipping on orders over ₹3000.</p>
                   <p>Safe and secure checkout.</p>
                 </div>
               </Card>
