@@ -9,7 +9,7 @@ const initialProducts: Product[] = [
     name: 'Neon Tetra',
     description: 'A small, vibrant freshwater fish with a bright blue-green horizontal stripe along the length of its body.',
     price: 2.99,
-    image: 'https://images.unsplash.com/photo-1520302519863-dcc29a5beafc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    image: 'https://images.unsplash.com/photo-1545048984-94b9645723f2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     category: 'fish',
     stock: 50
   },
@@ -18,7 +18,7 @@ const initialProducts: Product[] = [
     name: 'Amazon Sword Plant',
     description: 'A popular aquarium plant known for its sword-shaped leaves and easy maintenance.',
     price: 4.99,
-    image: 'https://images.unsplash.com/photo-1559717201-2879521bb49c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    image: 'https://images.unsplash.com/photo-1636597059968-7ea550a8f75a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     category: 'plants',
     stock: 30
   },
@@ -27,7 +27,7 @@ const initialProducts: Product[] = [
     name: 'Aquarium Filter',
     description: 'High-quality water filter that ensures clean and healthy water for your aquatic pets.',
     price: 24.99,
-    image: 'https://images.unsplash.com/photo-1584553391841-49b1f90dd5b9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    image: 'https://images.unsplash.com/photo-1584553321868-5fe8a8010228?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     category: 'equipment',
     stock: 15
   },
@@ -36,7 +36,7 @@ const initialProducts: Product[] = [
     name: 'Decorative Castle',
     description: 'A beautiful castle decoration that provides hiding spots for fish and enhances the aesthetic appeal of your aquarium.',
     price: 14.99,
-    image: 'https://images.unsplash.com/photo-1579160892259-20108d8a3c8a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    image: 'https://images.unsplash.com/photo-1581123303451-9a2f7bd2bd4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     category: 'decoration',
     stock: 10
   },
@@ -45,7 +45,7 @@ const initialProducts: Product[] = [
     name: 'Betta Fish',
     description: 'A vibrant and territorial fish known for its beautiful, flowing fins.',
     price: 9.99,
-    image: 'https://images.unsplash.com/photo-1551395648-9f2c98df44d4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    image: 'https://images.unsplash.com/photo-1583950421983-8f4eaa13bd6c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     category: 'fish',
     stock: 20
   },
@@ -54,7 +54,7 @@ const initialProducts: Product[] = [
     name: 'LED Aquarium Light',
     description: 'Energy-efficient LED light with multiple color settings to illuminate your aquarium.',
     price: 32.99,
-    image: 'https://images.unsplash.com/photo-1584553392642-8a932215456a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    image: 'https://images.unsplash.com/photo-1598084991519-c90900bc9df0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     category: 'equipment',
     stock: 12
   },
