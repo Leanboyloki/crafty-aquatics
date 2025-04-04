@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -9,12 +9,13 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import FileUpload from '@/components/FileUpload';
+import { uploadToServer } from '@/services/fileService';
 
 const formSchema = z.object({
   name: z.string().min(3, { message: "Product name must be at least 3 characters" }),
   description: z.string().min(10, { message: "Description must be at least 10 characters" }),
   price: z.coerce.number().positive({ message: "Price must be a positive number" }),
-  image: z.string().url({ message: "Please enter a valid image URL" }),
   category: z.enum(['fish', 'plants', 'equipment', 'decoration']),
   stock: z.coerce.number().int().nonnegative({ message: "Stock must be a non-negative integer" })
 });
@@ -23,7 +24,7 @@ type FormValues = z.infer<typeof formSchema>;
 
 interface ProductFormProps {
   initialData?: Product;
-  onSubmit: (data: FormValues) => void;
+  onSubmit: (data: FormValues & { image: string }) => void;
   isLoading?: boolean;
 }
 
@@ -32,21 +33,44 @@ const ProductForm: React.FC<ProductFormProps> = ({
   onSubmit, 
   isLoading = false 
 }) => {
+  const [uploadedImage, setUploadedImage] = useState<string | null>(initialData?.image || null);
+  const [isUploading, setIsUploading] = useState(false);
+  
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
       name: '',
       description: '',
       price: 0,
-      image: '',
       category: 'fish',
       stock: 0
     }
   });
 
+  const handleImageUpload = async (file: File) => {
+    setIsUploading(true);
+    try {
+      const result = await uploadToServer(file);
+      setUploadedImage(result.url);
+    } catch (error) {
+      console.error('Image upload failed:', error);
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleFormSubmit = (data: FormValues) => {
+    if (!uploadedImage) {
+      alert('Please upload a product image');
+      return;
+    }
+    
+    onSubmit({ ...data, image: uploadedImage });
+  };
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(handleFormSubmit)} className="space-y-6">
         <FormField
           control={form.control}
           name="name"
@@ -81,7 +105,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
             name="price"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Price ($)</FormLabel>
+                <FormLabel>Price (₹)</FormLabel>
                 <FormControl>
                   <Input 
                     type="number" 
@@ -141,24 +165,19 @@ const ProductForm: React.FC<ProductFormProps> = ({
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="image"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Image URL</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter image URL" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="space-y-2">
+          <FormLabel>Product Image</FormLabel>
+          <FileUpload 
+            onFileSelect={handleImageUpload}
+            initialImageUrl={initialData?.image}
+          />
+          {isUploading && <p className="text-sm text-gray-500">Uploading image...</p>}
+        </div>
 
         <Button 
           type="submit" 
           className="w-full bg-aqua-600 hover:bg-aqua-700"
-          disabled={isLoading}
+          disabled={isLoading || isUploading}
         >
           {isLoading ? 'Saving...' : initialData ? 'Update Product' : 'Add Product'}
         </Button>

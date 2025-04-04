@@ -10,10 +10,11 @@ import ProductForm from '@/components/ProductForm';
 import RequireAuth from '@/components/RequireAuth';
 import { useProducts } from '@/context/ProductContext';
 import { useToast } from '@/components/ui/use-toast';
+import { updateProduct } from '@/services/dbService';
 
 const EditProduct = () => {
   const { id } = useParams<{ id: string }>();
-  const { getProductById, updateProduct } = useProducts();
+  const { getProductById, updateProduct: updateLocalProduct } = useProducts();
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -44,10 +45,19 @@ const EditProduct = () => {
     setIsSubmitting(true);
     
     try {
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Create the updated product object with the ID
+      const updatedProduct = { 
+        ...data, 
+        id: product.id,
+        currency: '₹' // Ensure we keep the currency
+      };
       
-      updateProduct({ ...data, id: product.id });
+      // Simulate API request
+      console.log('Updating product in database...');
+      await updateProduct(updatedProduct);
+      
+      // Update local state
+      updateLocalProduct(updatedProduct);
       
       toast({
         title: "Product updated",
@@ -56,6 +66,7 @@ const EditProduct = () => {
       
       navigate('/admin/products');
     } catch (error) {
+      console.error('Error updating product:', error);
       toast({
         title: "Error",
         description: "There was an error updating the product. Please try again.",

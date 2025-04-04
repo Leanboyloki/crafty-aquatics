@@ -10,6 +10,7 @@ import ProductForm from '@/components/ProductForm';
 import RequireAuth from '@/components/RequireAuth';
 import { useProducts } from '@/context/ProductContext';
 import { useToast } from '@/components/ui/use-toast';
+import { createProduct } from '@/services/dbService';
 
 const AddProduct = () => {
   const { addProduct } = useProducts();
@@ -21,9 +22,11 @@ const AddProduct = () => {
     setIsSubmitting(true);
     
     try {
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Simulate API delay and database operation
+      console.log('Submitting product to database...');
+      await createProduct(data);
       
+      // Add to local state
       addProduct(data);
       
       toast({
@@ -33,6 +36,7 @@ const AddProduct = () => {
       
       navigate('/admin/products');
     } catch (error) {
+      console.error('Error adding product:', error);
       toast({
         title: "Error",
         description: "There was an error adding the product. Please try again.",
