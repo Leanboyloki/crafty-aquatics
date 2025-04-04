@@ -1,10 +1,11 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Users, Package, ShoppingBag, DollarSign, BarChart3, ArrowUp, ArrowDown } from 'lucide-react';
+import { Users, Package, ShoppingBag, DollarSign, BarChart3, ArrowUp, ArrowDown, Edit } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
+import { Button } from '@/components/ui/button';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import RequireAuth from '@/components/RequireAuth';
@@ -67,7 +68,7 @@ const Dashboard = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-500">Total Revenue</p>
-                    <h3 className="text-2xl font-bold mt-1">${totalRevenue.toFixed(2)}</h3>
+                    <h3 className="text-2xl font-bold mt-1">₹{totalRevenue.toFixed(2)}</h3>
                   </div>
                   <div className="p-3 bg-green-100 rounded-full">
                     <DollarSign className="h-6 w-6 text-green-600" />
@@ -190,6 +191,7 @@ const Dashboard = () => {
                 <TabsList className="mb-6">
                   <TabsTrigger value="orders">Recent Orders</TabsTrigger>
                   <TabsTrigger value="products">Low Stock Products</TabsTrigger>
+                  <TabsTrigger value="customers">Customer Registrations</TabsTrigger>
                 </TabsList>
                 
                 <TabsContent value="orders">
@@ -222,7 +224,7 @@ const Dashboard = () => {
                                 {order.status}
                               </span>
                             </td>
-                            <td className="px-4 py-3 text-right">${order.total.toFixed(2)}</td>
+                            <td className="px-4 py-3 text-right">₹{order.total.toFixed(2)}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -244,6 +246,7 @@ const Dashboard = () => {
                           <th className="px-4 py-3 text-left">Category</th>
                           <th className="px-4 py-3 text-right">Stock</th>
                           <th className="px-4 py-3 text-right">Price</th>
+                          <th className="px-4 py-3 text-right">Actions</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -260,7 +263,15 @@ const Dashboard = () => {
                               }`}>
                                 {product.stock}
                               </td>
-                              <td className="px-4 py-3 text-right">${product.price.toFixed(2)}</td>
+                              <td className="px-4 py-3 text-right">₹{product.price.toFixed(2)}</td>
+                              <td className="px-4 py-3 text-right">
+                                <Link to={`/admin/products/edit/${product.id}`}>
+                                  <Button size="sm" variant="outline" className="h-8 w-8 p-0">
+                                    <Edit className="h-4 w-4" />
+                                    <span className="sr-only">Edit</span>
+                                  </Button>
+                                </Link>
+                              </td>
                             </tr>
                           ))
                         }
@@ -270,6 +281,52 @@ const Dashboard = () => {
                   <div className="mt-4 text-right">
                     <Link to="/admin/products" className="text-aqua-600 hover:text-aqua-800 text-sm font-medium">
                       Manage products →
+                    </Link>
+                  </div>
+                </TabsContent>
+                
+                <TabsContent value="customers">
+                  <div className="rounded-md border">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="border-b bg-slate-50">
+                          <th className="px-4 py-3 text-left">ID</th>
+                          <th className="px-4 py-3 text-left">Name</th>
+                          <th className="px-4 py-3 text-left">Email</th>
+                          <th className="px-4 py-3 text-left">Registration Date</th>
+                          <th className="px-4 py-3 text-right">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {/* We'll display mock user data here */}
+                        {[
+                          { id: '1', name: 'Admin User', email: 'admin@aqua.com', date: '2024-01-15' },
+                          { id: '2', name: 'Test User', email: 'user@aqua.com', date: '2024-02-20' },
+                          { id: '3', name: 'John Smith', email: 'john@example.com', date: '2024-03-05' },
+                          { id: '4', name: 'Sarah Johnson', email: 'sarah@example.com', date: '2024-03-18' },
+                          { id: '5', name: 'Michael Brown', email: 'michael@example.com', date: '2024-04-02' },
+                        ].map((user, i) => (
+                          <tr key={i} className="border-b">
+                            <td className="px-4 py-3 font-medium">#{user.id}</td>
+                            <td className="px-4 py-3">{user.name}</td>
+                            <td className="px-4 py-3">{user.email}</td>
+                            <td className="px-4 py-3">{new Date(user.date).toLocaleDateString()}</td>
+                            <td className="px-4 py-3 text-right">
+                              <Link to={`/admin/customers`}>
+                                <Button size="sm" variant="outline" className="h-8 w-8 p-0">
+                                  <Users className="h-4 w-4" />
+                                  <span className="sr-only">View Details</span>
+                                </Button>
+                              </Link>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="mt-4 text-right">
+                    <Link to="/admin/customers" className="text-aqua-600 hover:text-aqua-800 text-sm font-medium">
+                      View all customers →
                     </Link>
                   </div>
                 </TabsContent>

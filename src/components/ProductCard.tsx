@@ -1,12 +1,13 @@
 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ShoppingCart, Info } from 'lucide-react';
+import { ShoppingCart, Info, Edit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Product } from '@/lib/types';
 import { useCart } from '@/context/CartContext';
+import { useAuth } from '@/context/AuthContext';
 
 interface ProductCardProps {
   product: Product;
@@ -15,6 +16,8 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const { user } = useAuth();
+  const isAdmin = user?.role === 'admin';
   
   const getCategoryColor = (category: string) => {
     switch (category) {
@@ -42,6 +45,21 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <Badge className={`absolute top-2 right-2 ${getCategoryColor(product.category)}`}>
           {product.category}
         </Badge>
+        
+        {/* Admin Edit Button */}
+        {isAdmin && (
+          <Button 
+            variant="secondary" 
+            size="sm" 
+            className="absolute top-2 left-2 bg-white bg-opacity-75 hover:bg-white"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/admin/products/edit/${product.id}`);
+            }}
+          >
+            <Edit className="h-4 w-4" />
+          </Button>
+        )}
       </div>
       
       <CardContent className="py-4 flex-grow">

@@ -1,6 +1,7 @@
 
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Product } from '@/lib/types';
+import { toast } from 'sonner';
 
 // Mock product data
 const initialProducts: Product[] = [
@@ -73,12 +74,26 @@ interface ProductContextType {
   deleteProduct: (id: string) => void;
   getProductById: (id: string) => Product | undefined;
   getProductsByCategory: (category: string) => Product[];
+  bulkUpdateStock: (productStockUpdates: {id: string, newStock: number}[]) => void;
 }
 
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
 
 export const ProductProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [products, setProducts] = useState<Product[]>(initialProducts);
+
+  // Load products from localStorage on initial render
+  useEffect(() => {
+    const savedProducts = localStorage.getItem('aquaProducts');
+    if (savedProducts) {
+      setProducts(JSON.parse(savedProducts));
+    }
+  }, []);
+
+  // Save products to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem('aquaProducts', JSON.stringify(products));
+  }, [products]);
 
   const addProduct = (product: Omit<Product, 'id'>) => {
     const newProduct = {
@@ -87,16 +102,19 @@ export const ProductProvider: React.FC<{ children: React.ReactNode }> = ({ child
       currency: '₹' // Set default currency for new products
     };
     setProducts([...products, newProduct]);
+    toast.success("Product added successfully");
   };
 
   const updateProduct = (updatedProduct: Product) => {
     setProducts(products.map(p => 
       p.id === updatedProduct.id ? updatedProduct : p
     ));
+    toast.success("Product updated successfully");
   };
 
   const deleteProduct = (id: string) => {
     setProducts(products.filter(p => p.id !== id));
+    toast.success("Product deleted successfully");
   };
 
   const getProductById = (id: string) => {
@@ -107,6 +125,20 @@ export const ProductProvider: React.FC<{ children: React.ReactNode }> = ({ child
     return products.filter(p => p.category === category);
   };
 
+  // New function to update stock levels for multiple products at once
+  const bulkUpdateStock = (productStockUpdates: {id: string, newStock: number}[]) => {
+    setProducts(prevProducts => {
+      return prevProducts.map(product => {
+        const update = productStockUpdates.find(update => update.id === product.id);
+        if (update) {
+          return { ...product, stock: update.newStock };
+        }
+        return product;
+      });
+    });
+    toast.success("Product stock levels updated");
+  };
+
   return (
     <ProductContext.Provider value={{ 
       products, 
@@ -114,7 +146,8 @@ export const ProductProvider: React.FC<{ children: React.ReactNode }> = ({ child
       updateProduct, 
       deleteProduct, 
       getProductById,
-      getProductsByCategory
+      getProductsByCategory,
+      bulkUpdateStock
     }}>
       {children}
     </ProductContext.Provider>
