@@ -5,6 +5,47 @@
 
 @layer base {
   :root {
+    --background: 190 100% 98%;
+    --foreground: 190 100% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 190 95% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 190 95% 10%;
+
+    --primary: 190 90% 40%;
+    --primary-foreground: 190 10% 98%;
+
+    --secondary: 200 60% 90%;
+    --secondary-foreground: 200 60% 10%;
+
+    --muted: 190 20% 90%;
+    --muted-foreground: 190 20% 40%;
+
+    --accent: 170 80% 40%;
+    --accent-foreground: 170 10% 98%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 190 20% 85%;
+    --input: 190 20% 85%;
+    --ring: 190 90% 40%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 190 95% 98%;
+    --sidebar-foreground: 190 90% 10%;
+    --sidebar-primary: 190 90% 40%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 190 20% 95%;
+    --sidebar-accent-foreground: 190 90% 10%;
+    --sidebar-border: 190 20% 90%;
+    --sidebar-ring: 190 90% 40%;
+  }
+
+  .dark {
     --background: 190 95% 5%;
     --foreground: 190 10% 98%;
 
@@ -41,8 +82,6 @@
     --sidebar-accent-foreground: 190 10% 95%;
     --sidebar-border: 190 50% 15%;
     --sidebar-ring: 190 80% 45%;
-
-    --radius: 0.75rem;
   }
 }
 
@@ -63,23 +102,5 @@
   
   .hover-scale {
     @apply transition-transform duration-300 hover:scale-105;
-  }
-
-  .glass-card {
-    @apply backdrop-blur-md bg-white/10 border border-white/20 shadow-lg;
-  }
-  
-  .neo-button {
-    @apply relative overflow-hidden transition-all duration-300 
-           shadow-md hover:shadow-xl active:shadow-inner
-           before:absolute before:inset-0 before:w-full before:h-full 
-           before:bg-white/20 before:scale-0 before:opacity-0 
-           before:transition-transform before:rounded-full before:duration-500
-           hover:before:scale-200 hover:before:opacity-100 
-           active:before:bg-white/10;
-  }
-  
-  .gradient-border {
-    @apply border border-transparent bg-gradient-to-br from-aqua-400/40 to-coral-500/40 bg-clip-border;
   }
 }
