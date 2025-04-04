@@ -206,7 +206,7 @@ const AdminProducts = () => {
                             {product.category}
                           </Badge>
                         </TableCell>
-                        <TableCell>${product.price.toFixed(2)}</TableCell>
+                        <TableCell>₹{product.price.toFixed(2)}</TableCell>
                         <TableCell>
                           <span className={`${
                             product.stock < 5 

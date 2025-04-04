@@ -46,7 +46,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       
       <CardContent className="py-4 flex-grow">
         <h3 className="text-lg font-semibold">{product.name}</h3>
-        <p className="text-xl font-bold text-aqua-600 my-2">{product.currency || '₹'}{product.price.toFixed(2)}</p>
+        <p className="text-xl font-bold text-aqua-600 my-2">₹{product.price.toFixed(2)}</p>
         <p className="text-gray-500 text-sm line-clamp-2">{product.description}</p>
       </CardContent>
       

@@ -40,7 +40,7 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
       <div className="flex flex-col flex-grow">
         <h3 className="text-lg font-medium">{product.name}</h3>
         <p className="text-sm text-gray-500 line-clamp-1">{product.description}</p>
-        <p className="font-medium text-aqua-600">${product.price.toFixed(2)}</p>
+        <p className="font-medium text-aqua-600">₹{product.price.toFixed(2)}</p>
       </div>
       
       <div className="flex items-center gap-2">
@@ -67,7 +67,7 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
       </div>
       
       <div className="text-right min-w-[80px]">
-        <p className="font-bold">${(product.price * quantity).toFixed(2)}</p>
+        <p className="font-bold">₹{(product.price * quantity).toFixed(2)}</p>
       </div>
       
       <Button 

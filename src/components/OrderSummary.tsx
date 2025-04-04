@@ -31,7 +31,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
                 <span className="text-gray-600">
                   {item.product.name} x {item.quantity}
                 </span>
-                <span>${(item.product.price * item.quantity).toFixed(2)}</span>
+                <span>₹{(item.product.price * item.quantity).toFixed(2)}</span>
               </div>
             ))}
           </div>
@@ -40,24 +40,24 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
         <div className="py-4 space-y-2">
           <div className="flex justify-between text-sm">
             <span className="text-gray-600">Subtotal</span>
-            <span>${subtotal.toFixed(2)}</span>
+            <span>₹{subtotal.toFixed(2)}</span>
           </div>
           
           <div className="flex justify-between text-sm">
             <span className="text-gray-600">Shipping</span>
-            <span>{shipping > 0 ? `$${shipping.toFixed(2)}` : 'Free'}</span>
+            <span>{shipping > 0 ? `₹${shipping.toFixed(2)}` : 'Free'}</span>
           </div>
           
           <div className="flex justify-between text-sm">
             <span className="text-gray-600">Tax</span>
-            <span>${tax.toFixed(2)}</span>
+            <span>₹{tax.toFixed(2)}</span>
           </div>
         </div>
         
         <div className="py-4">
           <div className="flex justify-between font-semibold">
             <span>Total</span>
-            <span className="text-lg text-aqua-700">${total.toFixed(2)}</span>
+            <span className="text-lg text-aqua-700">₹{total.toFixed(2)}</span>
           </div>
         </div>
       </div>

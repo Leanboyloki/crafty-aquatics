@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -43,7 +42,7 @@ const Checkout = () => {
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
   
-  const shipping = total >= 50 ? 0 : 4.99;
+  const shipping = total >= 3000 ? 0 : 299;
   const tax = 0; // No tax for simplicity
   const orderTotal = total + shipping + tax;
   

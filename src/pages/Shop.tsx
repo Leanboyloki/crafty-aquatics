@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Grid3X3, List } from 'lucide-react';
@@ -19,10 +18,8 @@ const Shop = () => {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [searchQuery, setSearchQuery] = useState('');
   
-  // Get category from URL params or default to 'all'
   const categoryParam = searchParams.get('category') || 'all';
   
-  // Sort options
   const sortOptions = [
     { value: 'nameAsc', label: 'Name (A-Z)' },
     { value: 'nameDesc', label: 'Name (Z-A)' },
@@ -32,16 +29,13 @@ const Shop = () => {
   
   const [sortBy, setSortBy] = useState('nameAsc');
   
-  // Filter and sort products whenever dependencies change
   useEffect(() => {
     let result = [...products];
     
-    // Apply category filter
     if (categoryParam !== 'all') {
       result = result.filter(product => product.category === categoryParam);
     }
     
-    // Apply search filter
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
       result = result.filter(
@@ -51,7 +45,6 @@ const Shop = () => {
       );
     }
     
-    // Apply sorting
     switch (sortBy) {
       case 'nameAsc':
         result.sort((a, b) => a.name.localeCompare(b.name));
@@ -73,7 +66,6 @@ const Shop = () => {
   }, [products, categoryParam, searchQuery, sortBy]);
   
   const handleCategoryChange = (category: string) => {
-    // Update URL params
     setSearchParams({ category });
   };
   
@@ -162,7 +154,7 @@ const Shop = () => {
                   <div className="flex-grow">
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
                       <h3 className="text-lg font-semibold">{product.name}</h3>
-                      <p className="text-xl font-bold text-aqua-600">${product.price.toFixed(2)}</p>
+                      <p className="text-xl font-bold text-aqua-600">₹{product.price.toFixed(2)}</p>
                     </div>
                     <p className="text-gray-500 mb-4">{product.description}</p>
                     <div className="flex justify-between items-center">
