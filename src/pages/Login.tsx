@@ -122,7 +122,7 @@ const Login = () => {
               
               <Button 
                 type="submit" 
-                className="w-full bg-aqua-600 hover:bg-aqua-700"
+                className="w-full bg-coral-500 hover:bg-coral-600 text-white"
                 disabled={isLoading}
               >
                 {isLoading ? "Signing in..." : "Sign In"}
@@ -141,7 +141,7 @@ const Login = () => {
                 <Button
                   type="button"
                   variant="outline"
-                  className="w-full"
+                  className="w-full border-aqua-600 text-aqua-600 hover:bg-aqua-600 hover:text-white"
                   onClick={() => {
                     form.setValue('email', 'user@aqua.com');
                     form.setValue('password', 'password');
@@ -152,7 +152,7 @@ const Login = () => {
                 <Button
                   type="button"
                   variant="outline"
-                  className="w-full"
+                  className="w-full border-aqua-600 text-aqua-600 hover:bg-aqua-600 hover:text-white"
                   onClick={() => {
                     form.setValue('email', 'admin@aqua.com');
                     form.setValue('password', 'password');
@@ -168,7 +168,7 @@ const Login = () => {
         <CardFooter className="flex justify-center">
           <p className="text-sm text-gray-600">
             Don't have an account?{" "}
-            <Link to="/register" className="text-aqua-600 hover:text-aqua-800 font-semibold">
+            <Link to="/register" className="text-coral-500 hover:text-coral-700 font-semibold">
               Sign up
             </Link>
           </p>

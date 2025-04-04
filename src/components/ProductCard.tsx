@@ -51,7 +51,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <Button 
             variant="secondary" 
             size="sm" 
-            className="absolute top-2 left-2 bg-white bg-opacity-75 hover:bg-white"
+            className="absolute top-2 left-2 bg-coral-500 text-white hover:bg-coral-600"
             onClick={(e) => {
               e.stopPropagation();
               navigate(`/admin/products/edit/${product.id}`);
@@ -82,7 +82,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <Button 
           variant="default" 
           size="sm" 
-          className="bg-aqua-600 hover:bg-aqua-700 text-white"
+          className="bg-coral-500 hover:bg-coral-600 text-white"
           onClick={() => addToCart(product)}
           disabled={product.stock <= 0}
         >

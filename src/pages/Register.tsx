@@ -163,7 +163,7 @@ const Register = () => {
               
               <Button 
                 type="submit" 
-                className="w-full bg-aqua-600 hover:bg-aqua-700"
+                className="w-full bg-coral-500 hover:bg-coral-600 text-white"
                 disabled={isLoading}
               >
                 {isLoading ? "Creating account..." : "Sign Up"}
@@ -175,7 +175,7 @@ const Register = () => {
         <CardFooter className="flex justify-center">
           <p className="text-sm text-gray-600">
             Already have an account?{" "}
-            <Link to="/login" className="text-aqua-600 hover:text-aqua-800 font-semibold">
+            <Link to="/login" className="text-coral-500 hover:text-coral-700 font-semibold">
               Sign in
             </Link>
           </p>

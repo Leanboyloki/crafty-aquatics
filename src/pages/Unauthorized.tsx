@@ -53,7 +53,7 @@ const Unauthorized = () => {
                 
                 <Button 
                   variant="outline" 
-                  className="w-full"
+                  className="w-full border-coral-400 text-coral-400 hover:bg-coral-500 hover:text-white"
                   onClick={handleLogout}
                 >
                   Logout
@@ -61,7 +61,7 @@ const Unauthorized = () => {
               </>
             ) : (
               <Button 
-                className="w-full bg-aqua-600 hover:bg-aqua-700"
+                className="w-full bg-coral-500 hover:bg-coral-600 text-white"
                 onClick={() => navigate('/login')}
               >
                 Sign In

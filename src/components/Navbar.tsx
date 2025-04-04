@@ -64,7 +64,7 @@ const Navbar = () => {
                 </Link>
                 <Button 
                   variant="outline" 
-                  className="border-white text-white hover:bg-white hover:text-aqua-800"
+                  className="border-coral-400 text-coral-400 hover:bg-coral-500 hover:text-white"
                   onClick={() => {
                     logout();
                     navigate('/login');
@@ -77,13 +77,13 @@ const Navbar = () => {
               <div className="flex items-center space-x-2">
                 <Button 
                   variant="outline" 
-                  className="border-white text-white hover:bg-white hover:text-aqua-800"
+                  className="border-coral-400 text-coral-400 hover:bg-coral-500 hover:text-white"
                   onClick={() => navigate('/login')}
                 >
                   Login
                 </Button>
                 <Button 
-                  className="bg-aqua-500 hover:bg-aqua-600 text-white"
+                  className="bg-coral-500 hover:bg-coral-600 text-white"
                   onClick={() => navigate('/register')}
                 >
                   Sign Up
@@ -142,7 +142,7 @@ const Navbar = () => {
                 </Link>
                 <Button 
                   variant="outline" 
-                  className="border-white text-white hover:bg-white hover:text-aqua-800 w-full"
+                  className="border-coral-400 text-coral-400 hover:bg-coral-500 hover:text-white w-full"
                   onClick={() => {
                     logout();
                     navigate('/login');
@@ -156,7 +156,7 @@ const Navbar = () => {
               <>
                 <Button 
                   variant="outline" 
-                  className="border-white text-white hover:bg-white hover:text-aqua-800 w-full"
+                  className="border-coral-400 text-coral-400 hover:bg-coral-500 hover:text-white w-full"
                   onClick={() => {
                     navigate('/login');
                     toggleMobileMenu();
@@ -165,7 +165,7 @@ const Navbar = () => {
                   Login
                 </Button>
                 <Button 
-                  className="bg-aqua-500 hover:bg-aqua-600 text-white w-full"
+                  className="bg-coral-500 hover:bg-coral-600 text-white w-full"
                   onClick={() => {
                     navigate('/register');
                     toggleMobileMenu();
