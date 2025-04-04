@@ -35,23 +35,23 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   };
 
   return (
-    <Card className="overflow-hidden hover-scale shadow-md h-full flex flex-col">
+    <Card className="overflow-hidden hover-scale shadow-lg h-full flex flex-col glass-card">
       <div className="relative aspect-square overflow-hidden">
         <img 
           src={product.image} 
           alt={product.name} 
           className="object-cover w-full h-full transition-transform duration-300 hover:scale-110"
         />
-        <Badge className={`absolute top-2 right-2 ${getCategoryColor(product.category)}`}>
+        <Badge className={`absolute top-2 right-2 ${getCategoryColor(category)}`}>
           {product.category}
         </Badge>
         
         {/* Admin Edit Button */}
         {isAdmin && (
           <Button 
-            variant="secondary" 
+            variant="coral" 
             size="sm" 
-            className="absolute top-2 left-2 bg-coral-500 text-white hover:bg-coral-600"
+            className="absolute top-2 left-2"
             onClick={(e) => {
               e.stopPropagation();
               navigate(`/admin/products/edit/${product.id}`);
@@ -64,15 +64,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       
       <CardContent className="py-4 flex-grow">
         <h3 className="text-lg font-semibold">{product.name}</h3>
-        <p className="text-xl font-bold text-aqua-600 my-2">₹{product.price.toFixed(2)}</p>
-        <p className="text-gray-500 text-sm line-clamp-2">{product.description}</p>
+        <p className="text-xl font-bold text-aqua-400 my-2">₹{product.price.toFixed(2)}</p>
+        <p className="text-gray-400 text-sm line-clamp-2">{product.description}</p>
       </CardContent>
       
       <CardFooter className="pt-0 pb-4 flex justify-between">
         <Button 
           variant="outline" 
           size="sm" 
-          className="border-aqua-600 text-aqua-600 hover:bg-aqua-600 hover:text-white"
+          className="border-aqua-600 text-aqua-400"
           onClick={() => navigate(`/product/${product.id}`)}
         >
           <Info className="h-4 w-4 mr-2" />
@@ -80,9 +80,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </Button>
         
         <Button 
-          variant="default" 
+          variant="aqua" 
           size="sm" 
-          className="bg-coral-500 hover:bg-coral-600 text-white"
           onClick={() => addToCart(product)}
           disabled={product.stock <= 0}
         >

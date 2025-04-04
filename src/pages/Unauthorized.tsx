@@ -21,14 +21,14 @@ const Unauthorized = () => {
       <Navbar />
       
       <main className="flex-grow flex items-center justify-center p-4">
-        <div className="max-w-md text-center">
-          <div className="mx-auto w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mb-6">
-            <ShieldAlert className="h-12 w-12 text-red-600" />
+        <div className="max-w-md text-center glass-card p-8 rounded-xl">
+          <div className="mx-auto w-24 h-24 bg-red-900/30 backdrop-blur-sm rounded-full flex items-center justify-center mb-6 border border-red-500/30 animate-pulse">
+            <ShieldAlert className="h-12 w-12 text-red-500" />
           </div>
           
-          <h1 className="text-3xl font-bold mb-2">Access Denied</h1>
+          <h1 className="text-3xl font-bold mb-2 text-gradient-to-br from-white to-red-200">Access Denied</h1>
           
-          <p className="text-gray-600 mb-6">
+          <p className="text-gray-300 mb-6">
             {user ? (
               <>
                 Sorry, you don't have permission to access this page. 
@@ -45,15 +45,16 @@ const Unauthorized = () => {
             {user ? (
               <>
                 <Button 
-                  className="w-full bg-aqua-600 hover:bg-aqua-700"
+                  variant="aqua"
+                  className="w-full"
                   onClick={() => navigate('/')}
                 >
                   Return to Home
                 </Button>
                 
                 <Button 
-                  variant="outline" 
-                  className="w-full border-coral-400 text-coral-400 hover:bg-coral-500 hover:text-white"
+                  variant="coral"
+                  className="w-full"
                   onClick={handleLogout}
                 >
                   Logout
@@ -61,7 +62,8 @@ const Unauthorized = () => {
               </>
             ) : (
               <Button 
-                className="w-full bg-coral-500 hover:bg-coral-600 text-white"
+                variant="coral"
+                className="w-full"
                 onClick={() => navigate('/login')}
               >
                 Sign In
