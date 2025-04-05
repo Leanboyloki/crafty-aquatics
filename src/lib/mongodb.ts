@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 // For demonstration purposes, we're using a placeholder connection
 // In production, this should be stored as an environment variable
 // Replace this with your actual MongoDB Atlas connection string
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://demo-user:demo-password@demo-cluster.mongodb.net/aquahaven?retryWrites=true&w=majority';
+const MONGODB_URI = import.meta.env.VITE_MONGODB_URI || 'mongodb+srv://demo-user:demo-password@demo-cluster.mongodb.net/aquahaven?retryWrites=true&w=majority';
 
 if (!MONGODB_URI) {
   throw new Error(
