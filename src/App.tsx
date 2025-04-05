@@ -34,13 +34,20 @@ import { CartProvider } from "./context/CartContext";
 import { ProductProvider } from "./context/ProductContext";
 import { OrderProvider } from "./context/OrderContext";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 const AppContent = () => {
-  const { isInitialized, isError } = useDatabase();
+  const { isInitialized, isLoading, isError } = useDatabase();
 
-  // Show loading state while database initializes
-  if (!isInitialized && !isError) {
+  // Always show a loading indicator during initial load
+  if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-b from-gray-900 to-gray-800">
         <div className="glass-card p-10 rounded-xl text-center max-w-md">
