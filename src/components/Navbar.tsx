@@ -20,7 +20,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-aqua-800 text-white shadow-md">
+    <nav className="sticky top-0 z-50 bg-card/80 backdrop-blur-md text-foreground shadow-md border-b border-border/50">
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           <Link to="/" className="text-2xl font-bold aqua-gradient bg-clip-text text-transparent">
@@ -63,8 +63,7 @@ const Navbar = () => {
                   <span>{user.name}</span>
                 </Link>
                 <Button 
-                  variant="outline" 
-                  className="border-coral-400 text-coral-400 hover:bg-coral-500 hover:text-white"
+                  variant="gradient" 
                   onClick={() => {
                     logout();
                     navigate('/login');
@@ -77,13 +76,14 @@ const Navbar = () => {
               <div className="flex items-center space-x-2">
                 <Button 
                   variant="outline" 
-                  className="border-coral-400 text-coral-400 hover:bg-coral-500 hover:text-white"
+                  className="border-coral-400/50 text-coral-400 hover:bg-coral-500/20"
                   onClick={() => navigate('/login')}
                 >
                   Login
                 </Button>
                 <Button 
-                  className="bg-coral-500 hover:bg-coral-600 text-white"
+                  variant="gradient" 
+                  className="bg-gradient-to-r from-coral-500 to-coral-400"
                   onClick={() => navigate('/register')}
                 >
                   Sign Up
@@ -117,32 +117,32 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-aqua-800 p-4">
+        <div className="md:hidden bg-card/95 backdrop-blur-md p-4 border-t border-border/50">
           <div className="flex flex-col space-y-4">
-            <Link to="/" className="text-white hover:text-aqua-300 py-2" onClick={toggleMobileMenu}>
+            <Link to="/" className="text-foreground hover:text-aqua-300 py-2" onClick={toggleMobileMenu}>
               Home
             </Link>
-            <Link to="/shop" className="text-white hover:text-aqua-300 py-2" onClick={toggleMobileMenu}>
+            <Link to="/shop" className="text-foreground hover:text-aqua-300 py-2" onClick={toggleMobileMenu}>
               Shop
             </Link>
             {user && (
-              <Link to="/orders" className="text-white hover:text-aqua-300 py-2" onClick={toggleMobileMenu}>
+              <Link to="/orders" className="text-foreground hover:text-aqua-300 py-2" onClick={toggleMobileMenu}>
                 My Orders
               </Link>
             )}
             {user?.role === 'admin' && (
-              <Link to="/admin" className="text-white hover:text-aqua-300 py-2" onClick={toggleMobileMenu}>
+              <Link to="/admin" className="text-foreground hover:text-aqua-300 py-2" onClick={toggleMobileMenu}>
                 Admin Dashboard
               </Link>
             )}
             {user ? (
               <>
-                <Link to="/profile" className="text-white hover:text-aqua-300 py-2" onClick={toggleMobileMenu}>
+                <Link to="/profile" className="text-foreground hover:text-aqua-300 py-2" onClick={toggleMobileMenu}>
                   Profile
                 </Link>
                 <Button 
-                  variant="outline" 
-                  className="border-coral-400 text-coral-400 hover:bg-coral-500 hover:text-white w-full"
+                  variant="gradient" 
+                  className="w-full"
                   onClick={() => {
                     logout();
                     navigate('/login');
@@ -156,7 +156,7 @@ const Navbar = () => {
               <>
                 <Button 
                   variant="outline" 
-                  className="border-coral-400 text-coral-400 hover:bg-coral-500 hover:text-white w-full"
+                  className="border-coral-400/50 text-coral-400 hover:bg-coral-500/20 w-full"
                   onClick={() => {
                     navigate('/login');
                     toggleMobileMenu();
@@ -165,7 +165,8 @@ const Navbar = () => {
                   Login
                 </Button>
                 <Button 
-                  className="bg-coral-500 hover:bg-coral-600 text-white w-full"
+                  variant="gradient"
+                  className="bg-gradient-to-r from-coral-500 to-coral-400 w-full" 
                   onClick={() => {
                     navigate('/register');
                     toggleMobileMenu();

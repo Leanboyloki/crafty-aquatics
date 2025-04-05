@@ -5,47 +5,6 @@
 
 @layer base {
   :root {
-    --background: 190 100% 98%;
-    --foreground: 190 100% 10%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 190 95% 10%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 190 95% 10%;
-
-    --primary: 190 90% 40%;
-    --primary-foreground: 190 10% 98%;
-
-    --secondary: 200 60% 90%;
-    --secondary-foreground: 200 60% 10%;
-
-    --muted: 190 20% 90%;
-    --muted-foreground: 190 20% 40%;
-
-    --accent: 170 80% 40%;
-    --accent-foreground: 170 10% 98%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 190 20% 85%;
-    --input: 190 20% 85%;
-    --ring: 190 90% 40%;
-
-    --radius: 0.5rem;
-
-    --sidebar-background: 190 95% 98%;
-    --sidebar-foreground: 190 90% 10%;
-    --sidebar-primary: 190 90% 40%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 190 20% 95%;
-    --sidebar-accent-foreground: 190 90% 10%;
-    --sidebar-border: 190 20% 90%;
-    --sidebar-ring: 190 90% 40%;
-  }
-
-  .dark {
     --background: 190 95% 5%;
     --foreground: 190 10% 98%;
 
@@ -82,6 +41,8 @@
     --sidebar-accent-foreground: 190 10% 95%;
     --sidebar-border: 190 50% 15%;
     --sidebar-ring: 190 80% 45%;
+
+    --radius: 0.5rem;
   }
 }
 
@@ -93,6 +54,19 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-muted/30 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary/70 rounded-full hover:bg-primary transition-colors;
+  }
 }
 
 @layer components {
@@ -102,5 +76,21 @@
   
   .hover-scale {
     @apply transition-transform duration-300 hover:scale-105;
+  }
+
+  .glass-card {
+    @apply bg-card/70 backdrop-blur-md border border-white/10 shadow-lg;
+  }
+
+  .glass-button {
+    @apply bg-primary/30 backdrop-blur-sm border border-white/20 shadow-lg transition-all duration-300 hover:bg-primary/50 hover:border-white/30 hover:shadow-primary/20 hover:shadow-xl;
+  }
+
+  .neon-border {
+    @apply border border-primary/50 shadow-[0_0_10px_rgba(0,188,212,0.5)] animate-pulse-glow;
+  }
+
+  .shimmer-bg {
+    @apply bg-gradient-to-r from-muted via-muted/50 to-muted bg-[length:400%_100%] animate-shimmer;
   }
 }

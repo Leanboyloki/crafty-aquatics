@@ -21,14 +21,14 @@ const Unauthorized = () => {
       <Navbar />
       
       <main className="flex-grow flex items-center justify-center p-4">
-        <div className="max-w-md text-center">
-          <div className="mx-auto w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mb-6">
-            <ShieldAlert className="h-12 w-12 text-red-600" />
+        <div className="max-w-md text-center glass-card p-8 rounded-xl">
+          <div className="mx-auto w-24 h-24 bg-destructive/20 rounded-full flex items-center justify-center mb-6 neon-border border-destructive/50">
+            <ShieldAlert className="h-12 w-12 text-destructive" />
           </div>
           
-          <h1 className="text-3xl font-bold mb-2">Access Denied</h1>
+          <h1 className="text-3xl font-bold mb-2 text-foreground">Access Denied</h1>
           
-          <p className="text-gray-600 mb-6">
+          <p className="text-muted-foreground mb-6">
             {user ? (
               <>
                 Sorry, you don't have permission to access this page. 
@@ -45,7 +45,8 @@ const Unauthorized = () => {
             {user ? (
               <>
                 <Button 
-                  className="w-full bg-aqua-600 hover:bg-aqua-700"
+                  variant="gradient"
+                  className="w-full" 
                   onClick={() => navigate('/')}
                 >
                   Return to Home
@@ -53,7 +54,7 @@ const Unauthorized = () => {
                 
                 <Button 
                   variant="outline" 
-                  className="w-full border-coral-400 text-coral-400 hover:bg-coral-500 hover:text-white"
+                  className="w-full border-coral-400/50 text-coral-400 hover:bg-coral-500/20"
                   onClick={handleLogout}
                 >
                   Logout
@@ -61,7 +62,8 @@ const Unauthorized = () => {
               </>
             ) : (
               <Button 
-                className="w-full bg-coral-500 hover:bg-coral-600 text-white"
+                variant="gradient"
+                className="w-full bg-gradient-to-r from-coral-500 to-coral-400"
                 onClick={() => navigate('/login')}
               >
                 Sign In
