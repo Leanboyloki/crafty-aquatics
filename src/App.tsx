@@ -1,10 +1,11 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useEffect } from "react";
 import { useDatabase } from "./hooks/useDatabase";
+import { Loader2 } from "lucide-react";
 
 // Pages
 import Index from "./pages/Index";
@@ -38,21 +39,32 @@ const queryClient = new QueryClient();
 const AppContent = () => {
   const { isInitialized, isError } = useDatabase();
 
-  // You could show a loading state here while database initializes
+  // Show loading state while database initializes
   if (!isInitialized && !isError) {
-    return <div className="flex items-center justify-center h-screen">Initializing database...</div>;
+    return (
+      <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-b from-gray-900 to-gray-800">
+        <div className="glass-card p-10 rounded-xl text-center max-w-md">
+          <Loader2 className="h-12 w-12 mx-auto animate-spin text-aqua-500 mb-4" />
+          <h2 className="text-2xl font-bold text-aqua-400 mb-2">Connecting to Database</h2>
+          <p className="text-gray-300">Setting up your aquatic experience...</p>
+        </div>
+      </div>
+    );
   }
 
   // Show error message if database initialization failed
   if (isError) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-red-500">Database Connection Error</h1>
-          <p className="mt-2">Failed to connect to the database. Please check your MongoDB connection.</p>
-          <p className="mt-4">
-            Make sure to update the MongoDB connection string in <code>src/lib/mongodb.ts</code>
-          </p>
+      <div className="flex items-center justify-center h-screen bg-gradient-to-b from-gray-900 to-gray-800">
+        <div className="glass-card p-10 rounded-xl text-center max-w-md border-red-500/30">
+          <h1 className="text-2xl font-bold text-red-400 mb-4">Database Connection Error</h1>
+          <p className="text-gray-300 mb-4">Failed to connect to the database. Please check your MongoDB connection.</p>
+          <div className="bg-gray-800/60 p-4 rounded-md text-left mb-4">
+            <p className="text-sm text-gray-400 font-mono">
+              Make sure to update the MongoDB connection string in <code className="text-amber-400">src/lib/mongodb.ts</code>
+            </p>
+          </div>
+          <p className="text-sm text-gray-400">Check the console for more details.</p>
         </div>
       </div>
     );
