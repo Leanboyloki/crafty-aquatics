@@ -21,6 +21,8 @@ export const useDatabase = () => {
         console.error('Failed to initialize database:', error);
         setIsError(true);
         toast.error("Failed to connect to the database. Check console for details.");
+        // Mark as initialized anyway to allow the app to load without a DB connection
+        setIsInitialized(true);
       } finally {
         setIsLoading(false);
       }

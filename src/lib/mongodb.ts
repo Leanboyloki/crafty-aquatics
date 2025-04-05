@@ -56,6 +56,3 @@ export async function connectToDatabase() {
     throw e;
   }
 }
-
-// Mongoose models
-// These will be imported in the service layer
