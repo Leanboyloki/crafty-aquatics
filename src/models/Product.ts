@@ -38,4 +38,8 @@ const ProductSchema = new mongoose.Schema({
   timestamps: true
 });
 
-export default mongoose.models.Product || mongoose.model('Product', ProductSchema);
+// Check if the model exists before creating a new one
+// This is important for hot module reloading in development
+const Product = mongoose.models.Product || mongoose.model('Product', ProductSchema);
+
+export default Product;

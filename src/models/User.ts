@@ -27,4 +27,8 @@ const UserSchema = new mongoose.Schema({
   timestamps: true
 });
 
-export default mongoose.models.User || mongoose.model('User', UserSchema);
+// Check if the model exists before creating a new one
+// This is important for hot module reloading in development
+const User = mongoose.models.User || mongoose.model('User', UserSchema);
+
+export default User;
