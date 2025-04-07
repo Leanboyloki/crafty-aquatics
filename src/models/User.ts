@@ -31,10 +31,10 @@ const UserSchema = new mongoose.Schema({
 let User;
 
 try {
-  // Check if the model is already defined
-  User = mongoose.models.User || mongoose.model('User', UserSchema);
+  // Check if mongoose.models exists before accessing it
+  User = mongoose.models?.User || mongoose.model('User', UserSchema);
 } catch (error) {
-  // If model doesn't exist yet, create it
+  // If error occurs, create a new model
   User = mongoose.model('User', UserSchema);
 }
 
