@@ -1,6 +1,10 @@
 
 import mongoose from 'mongoose';
 
+// Detect environment
+const isClient = typeof window !== 'undefined';
+
+// Define the schemas
 const OrderItemSchema = new mongoose.Schema({
   productId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -46,15 +50,29 @@ const OrderSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// For client-side rendering in browsers
+// Handle model compilation based on environment
 let Order;
 
-try {
-  // Check if mongoose.models exists before accessing it
-  Order = mongoose.models?.Order || mongoose.model('Order', OrderSchema);
-} catch (error) {
-  // If error occurs, create a new model
-  Order = mongoose.model('Order', OrderSchema);
+// For browser environment, use a placeholder
+if (isClient) {
+  // Create a mock model that won't actually connect to MongoDB
+  const mockModel = {
+    find: () => Promise.resolve([]),
+    findOne: () => Promise.resolve(null),
+    create: (data) => Promise.resolve({ _id: Date.now().toString(), ...data, createdAt: new Date() }),
+    findByIdAndUpdate: () => Promise.resolve({}),
+  };
+  
+  Order = mockModel;
+} else {
+  // For server environment, use actual Mongoose model
+  try {
+    // Check if model is already defined to prevent OverwriteModelError
+    Order = mongoose.models.Order || mongoose.model('Order', OrderSchema);
+  } catch (error) {
+    console.error("Error creating Order model:", error);
+    Order = mongoose.model('Order', OrderSchema);
+  }
 }
 
 export default Order;

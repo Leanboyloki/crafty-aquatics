@@ -1,6 +1,10 @@
 
 import mongoose from 'mongoose';
 
+// Detect environment
+const isClient = typeof window !== 'undefined';
+
+// Define the schema
 const ProductSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -38,15 +42,30 @@ const ProductSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// For client-side rendering in browsers
+// Handle model compilation based on environment
 let Product;
 
-try {
-  // Check if mongoose.models exists before accessing it
-  Product = mongoose.models?.Product || mongoose.model('Product', ProductSchema);
-} catch (error) {
-  // If error occurs, create a new model
-  Product = mongoose.model('Product', ProductSchema);
+// For browser environment, use a placeholder
+if (isClient) {
+  // Create a mock model that won't actually connect to MongoDB
+  const mockModel = {
+    find: () => Promise.resolve([]),
+    findById: () => Promise.resolve(null),
+    create: (data) => Promise.resolve({ _id: Date.now().toString(), ...data }),
+    findByIdAndUpdate: () => Promise.resolve({}),
+    findByIdAndDelete: () => Promise.resolve({}),
+  };
+  
+  Product = mockModel;
+} else {
+  // For server environment, use actual Mongoose model
+  try {
+    // Check if model is already defined to prevent OverwriteModelError
+    Product = mongoose.models.Product || mongoose.model('Product', ProductSchema);
+  } catch (error) {
+    console.error("Error creating Product model:", error);
+    Product = mongoose.model('Product', ProductSchema);
+  }
 }
 
 export default Product;

@@ -1,55 +1,48 @@
 
 import mongoose from 'mongoose';
 
-// MongoDB connection string 
-// For demonstration purposes, we're using a placeholder connection
-// In production, this should be stored as an environment variable
-// Replace this with your actual MongoDB Atlas connection string
+// Detect environment
+const isClient = typeof window !== 'undefined';
+
+// MongoDB connection string (stored as env variable in production)
 const MONGODB_URI = import.meta.env.VITE_MONGODB_URI || 'mongodb+srv://demo-user:demo-password@demo-cluster.mongodb.net/aquahaven?retryWrites=true&w=majority';
 
-if (!MONGODB_URI) {
-  throw new Error(
-    'Please define the MONGODB_URI environment variable'
-  );
-}
+// Mock connection object for client-side rendering
+const mockConnection = {
+  connection: { readyState: 1 },
+  isConnected: true,
+  isClient: true
+};
 
-/**
- * We create a cached connection object to avoid creating multiple
- * connections during hot reloads in development
- */
+// Cache object to avoid multiple connections
 let cached = {
   conn: null,
   promise: null
 };
 
-// Handle client-side rendering environment
-if (typeof window !== 'undefined') {
-  // We're in a browser - initialize mongoose for browser environment
-  mongoose.set('strictQuery', false);
-  
-  // Reset cached connection
-  cached = { conn: null, promise: null };
-  
-  console.log('Mongoose setup for browser environment');
-}
-
+/**
+ * Connects to MongoDB database
+ * Returns mock connection in browser environment
+ */
 export async function connectToDatabase() {
+  // If in browser environment, return mock connection
+  if (isClient) {
+    console.log('Browser environment detected, using mock connection');
+    return mockConnection;
+  }
+
+  // Return cached connection if exists
   if (cached.conn) {
     return cached.conn;
   }
 
-  // In browser environment, we should return a mock connection
-  // to prevent actual connection attempts
-  if (typeof window !== 'undefined') {
-    console.log('Browser environment detected, returning mock connection');
-    // Return a mock connection object that won't attempt actual MongoDB connections
-    return { connection: { readyState: 1 } };
-  }
-
+  // Establish new connection if not cached
   if (!cached.promise) {
+    mongoose.set('strictQuery', false);
+    
     const opts = {
       bufferCommands: false,
-      serverSelectionTimeoutMS: 5000, // Timeout after 5 seconds instead of 30
+      serverSelectionTimeoutMS: 5000,
     };
 
     cached.promise = mongoose.connect(MONGODB_URI, opts)

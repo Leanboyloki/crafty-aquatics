@@ -1,6 +1,7 @@
+
 /**
  * Database service for handling MongoDB operations
- * This service interfaces with MongoDB Atlas for persistence
+ * This service automatically handles both browser and server environments
  */
 
 import { Product, User, Order } from '@/lib/types';
@@ -10,25 +11,26 @@ import UserModel from '@/models/User';
 import OrderModel from '@/models/Order';
 
 // Helper function to check if we're in browser environment
-const isBrowser = typeof window !== 'undefined';
+const isClient = typeof window !== 'undefined';
 
-// Product operations
+// -------------------- Product Operations --------------------
+
 export const fetchProducts = async (): Promise<Product[]> => {
   try {
-    if (isBrowser) {
-      console.log('Browser environment, using local storage for products');
+    // Browser environment uses localStorage
+    if (isClient) {
+      console.log('Using local storage for products');
       const savedProducts = localStorage.getItem('aquaProducts');
       if (savedProducts) {
         return JSON.parse(savedProducts);
       }
-      // If no local storage data, just return an empty array
       return [];
     }
     
+    // Server environment uses MongoDB
     await connectToDatabase();
     console.log('Fetching products from MongoDB');
     
-    // Convert MongoDB documents to our Product type
     const products = await ProductModel.find({});
     return products.map((product: any) => ({
       id: product._id.toString(),
@@ -48,26 +50,22 @@ export const fetchProducts = async (): Promise<Product[]> => {
 
 export const createProduct = async (product: Omit<Product, 'id'>): Promise<Product> => {
   try {
-    if (isBrowser) {
-      console.log('Browser environment, creating product in local storage');
-      // Get existing products
+    if (isClient) {
+      // Browser environment
       const savedProducts = localStorage.getItem('aquaProducts');
       const products = savedProducts ? JSON.parse(savedProducts) : [];
       
-      // Create new product with ID
       const newProduct = {
         ...product,
         id: Math.random().toString(36).substr(2, 9)
       };
       
-      // Save to local storage
       localStorage.setItem('aquaProducts', JSON.stringify([...products, newProduct]));
       return newProduct;
     }
     
+    // Server environment
     await connectToDatabase();
-    console.log('Creating product in MongoDB:', product);
-    
     const newProduct = await ProductModel.create(product);
     
     return {
@@ -88,25 +86,21 @@ export const createProduct = async (product: Omit<Product, 'id'>): Promise<Produ
 
 export const updateProduct = async (product: Product): Promise<Product> => {
   try {
-    if (isBrowser) {
-      console.log('Browser environment, updating product in local storage');
-      // Get existing products
+    if (isClient) {
+      // Browser environment
       const savedProducts = localStorage.getItem('aquaProducts');
       const products = savedProducts ? JSON.parse(savedProducts) : [];
       
-      // Update product
       const updatedProducts = products.map((p: Product) => 
         p.id === product.id ? product : p
       );
       
-      // Save to local storage
       localStorage.setItem('aquaProducts', JSON.stringify(updatedProducts));
       return product;
     }
     
+    // Server environment
     await connectToDatabase();
-    console.log('Updating product in MongoDB:', product);
-    
     const { id, ...updateData } = product;
     await ProductModel.findByIdAndUpdate(id, updateData);
     
@@ -119,23 +113,18 @@ export const updateProduct = async (product: Product): Promise<Product> => {
 
 export const deleteProduct = async (id: string): Promise<void> => {
   try {
-    if (isBrowser) {
-      console.log('Browser environment, deleting product from local storage');
-      // Get existing products
+    if (isClient) {
+      // Browser environment
       const savedProducts = localStorage.getItem('aquaProducts');
       const products = savedProducts ? JSON.parse(savedProducts) : [];
       
-      // Delete product
       const filteredProducts = products.filter((p: Product) => p.id !== id);
-      
-      // Save to local storage
       localStorage.setItem('aquaProducts', JSON.stringify(filteredProducts));
       return;
     }
     
+    // Server environment
     await connectToDatabase();
-    console.log('Deleting product from MongoDB:', id);
-    
     await ProductModel.findByIdAndDelete(id);
   } catch (error) {
     console.error('Error deleting product:', error);
@@ -143,13 +132,20 @@ export const deleteProduct = async (id: string): Promise<void> => {
   }
 };
 
-// Order operations
+// -------------------- Order Operations --------------------
+
 export const fetchOrders = async (): Promise<Order[]> => {
   try {
-    await connectToDatabase();
-    console.log('Fetching orders from MongoDB');
+    if (isClient) {
+      // Browser environment
+      const savedOrders = localStorage.getItem('aquaOrders');
+      return savedOrders ? JSON.parse(savedOrders) : [];
+    }
     
+    // Server environment
+    await connectToDatabase();
     const orders = await OrderModel.find({});
+    
     return orders.map((order: any) => ({
       id: order._id.toString(),
       userId: order.userId,
@@ -157,12 +153,12 @@ export const fetchOrders = async (): Promise<Order[]> => {
         product: {
           id: item.productId.toString(),
           name: item.name,
-          description: '',  // These fields might need to be populated
+          description: '',
           price: item.price,
           image: item.image,
-          category: 'fish', // Default value, might need population
-          stock: 0,         // Default value, might need population
-          currency: '₹'     // Default value
+          category: 'fish', // Default category
+          stock: 0,
+          currency: '₹'
         },
         quantity: item.quantity
       })),
@@ -180,10 +176,24 @@ export const fetchOrders = async (): Promise<Order[]> => {
 
 export const createOrder = async (orderData: Omit<Order, 'id' | 'createdAt'>): Promise<Order> => {
   try {
-    await connectToDatabase();
-    console.log('Creating order in MongoDB:', orderData);
+    if (isClient) {
+      // Browser environment
+      const savedOrders = localStorage.getItem('aquaOrders');
+      const orders = savedOrders ? JSON.parse(savedOrders) : [];
+      
+      const newOrder = {
+        ...orderData,
+        id: Math.random().toString(36).substr(2, 9),
+        createdAt: new Date().toISOString()
+      };
+      
+      localStorage.setItem('aquaOrders', JSON.stringify([...orders, newOrder]));
+      return newOrder;
+    }
     
-    // Transform cart items to order items format
+    // Server environment
+    await connectToDatabase();
+    
     const items = orderData.items.map(item => ({
       productId: item.product.id,
       name: item.product.name,
@@ -200,7 +210,7 @@ export const createOrder = async (orderData: Omit<Order, 'id' | 'createdAt'>): P
     return {
       id: newOrder._id.toString(),
       userId: newOrder.userId,
-      items: orderData.items,  // Use original items with full product details
+      items: orderData.items,
       total: newOrder.total,
       status: newOrder.status,
       createdAt: newOrder.createdAt.toISOString(),
@@ -215,9 +225,21 @@ export const createOrder = async (orderData: Omit<Order, 'id' | 'createdAt'>): P
 
 export const updateOrderStatus = async (orderId: string, status: Order['status']): Promise<void> => {
   try {
-    await connectToDatabase();
-    console.log(`Updating order ${orderId} status to ${status}`);
+    if (isClient) {
+      // Browser environment
+      const savedOrders = localStorage.getItem('aquaOrders');
+      const orders = savedOrders ? JSON.parse(savedOrders) : [];
+      
+      const updatedOrders = orders.map((order: Order) => 
+        order.id === orderId ? { ...order, status } : order
+      );
+      
+      localStorage.setItem('aquaOrders', JSON.stringify(updatedOrders));
+      return;
+    }
     
+    // Server environment
+    await connectToDatabase();
     await OrderModel.findByIdAndUpdate(orderId, { status });
   } catch (error) {
     console.error('Error updating order status:', error);
@@ -225,13 +247,20 @@ export const updateOrderStatus = async (orderId: string, status: Order['status']
   }
 };
 
-// User operations
+// -------------------- User Operations --------------------
+
 export const fetchUsers = async (): Promise<User[]> => {
   try {
-    await connectToDatabase();
-    console.log('Fetching users from MongoDB');
+    if (isClient) {
+      // Browser environment
+      const savedUsers = localStorage.getItem('aquaUsers');
+      return savedUsers ? JSON.parse(savedUsers) : [];
+    }
     
-    const users = await UserModel.find({}, '-password');  // Exclude password
+    // Server environment
+    await connectToDatabase();
+    const users = await UserModel.find({}, '-password');
+    
     return users.map((user: any) => ({
       id: user._id.toString(),
       name: user.name,
@@ -246,9 +275,22 @@ export const fetchUsers = async (): Promise<User[]> => {
 
 export const createUser = async (userData: Omit<User, 'id'>): Promise<User> => {
   try {
-    await connectToDatabase();
-    console.log('Creating user in MongoDB:', userData);
+    if (isClient) {
+      // Browser environment
+      const savedUsers = localStorage.getItem('aquaUsers');
+      const users = savedUsers ? JSON.parse(savedUsers) : [];
+      
+      const newUser = {
+        ...userData,
+        id: Math.random().toString(36).substr(2, 9)
+      };
+      
+      localStorage.setItem('aquaUsers', JSON.stringify([...users, newUser]));
+      return newUser;
+    }
     
+    // Server environment
+    await connectToDatabase();
     const newUser = await UserModel.create(userData);
     
     return {
@@ -265,6 +307,15 @@ export const createUser = async (userData: Omit<User, 'id'>): Promise<User> => {
 
 export const getUserByEmail = async (email: string): Promise<User | null> => {
   try {
+    if (isClient) {
+      // Browser environment
+      const savedUsers = localStorage.getItem('aquaUsers');
+      const users = savedUsers ? JSON.parse(savedUsers) : [];
+      const user = users.find((user: User) => user.email === email);
+      return user || null;
+    }
+    
+    // Server environment
     await connectToDatabase();
     const user = await UserModel.findOne({ email });
     
@@ -284,6 +335,27 @@ export const getUserByEmail = async (email: string): Promise<User | null> => {
 
 export const authenticateUser = async (email: string, password: string): Promise<User | null> => {
   try {
+    if (isClient) {
+      // Browser environment - check demo users
+      // In a real app, we'd use a proper auth service
+      if ((email === 'admin@aquastore.com' && password === 'admin123') ||
+          (email === 'user@aquastore.com' && password === 'user123')) {
+        
+        const role = email.startsWith('admin') ? 'admin' : 'user';
+        const name = role === 'admin' ? 'Admin User' : 'Test User';
+        
+        return {
+          id: email.replace('@', '-').replace('.', '-'),
+          email,
+          name,
+          role
+        };
+      }
+      
+      return null;
+    }
+    
+    // Server environment
     await connectToDatabase();
     // In a real app, we'd hash and compare passwords
     const user = await UserModel.findOne({ email, password });
