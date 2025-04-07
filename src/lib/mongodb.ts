@@ -22,18 +22,28 @@ let cached = {
   promise: null
 };
 
-// Reset connection on client-side to avoid issues with browser refreshes
+// Handle client-side rendering environment
 if (typeof window !== 'undefined') {
-  // Initialize mongoose for browser environment
-  if (!mongoose.connection?.readyState) {
-    mongoose.set('strictQuery', false);
-  }
+  // We're in a browser - initialize mongoose for browser environment
+  mongoose.set('strictQuery', false);
+  
+  // Reset cached connection
   cached = { conn: null, promise: null };
+  
+  console.log('Mongoose setup for browser environment');
 }
 
 export async function connectToDatabase() {
   if (cached.conn) {
     return cached.conn;
+  }
+
+  // In browser environment, we should return a mock connection
+  // to prevent actual connection attempts
+  if (typeof window !== 'undefined') {
+    console.log('Browser environment detected, returning mock connection');
+    // Return a mock connection object that won't attempt actual MongoDB connections
+    return { connection: { readyState: 1 } };
   }
 
   if (!cached.promise) {

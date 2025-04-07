@@ -1,4 +1,3 @@
-
 /**
  * Database service for handling MongoDB operations
  * This service interfaces with MongoDB Atlas for persistence
@@ -10,9 +9,22 @@ import ProductModel from '@/models/Product';
 import UserModel from '@/models/User';
 import OrderModel from '@/models/Order';
 
+// Helper function to check if we're in browser environment
+const isBrowser = typeof window !== 'undefined';
+
 // Product operations
 export const fetchProducts = async (): Promise<Product[]> => {
   try {
+    if (isBrowser) {
+      console.log('Browser environment, using local storage for products');
+      const savedProducts = localStorage.getItem('aquaProducts');
+      if (savedProducts) {
+        return JSON.parse(savedProducts);
+      }
+      // If no local storage data, just return an empty array
+      return [];
+    }
+    
     await connectToDatabase();
     console.log('Fetching products from MongoDB');
     
@@ -36,6 +48,23 @@ export const fetchProducts = async (): Promise<Product[]> => {
 
 export const createProduct = async (product: Omit<Product, 'id'>): Promise<Product> => {
   try {
+    if (isBrowser) {
+      console.log('Browser environment, creating product in local storage');
+      // Get existing products
+      const savedProducts = localStorage.getItem('aquaProducts');
+      const products = savedProducts ? JSON.parse(savedProducts) : [];
+      
+      // Create new product with ID
+      const newProduct = {
+        ...product,
+        id: Math.random().toString(36).substr(2, 9)
+      };
+      
+      // Save to local storage
+      localStorage.setItem('aquaProducts', JSON.stringify([...products, newProduct]));
+      return newProduct;
+    }
+    
     await connectToDatabase();
     console.log('Creating product in MongoDB:', product);
     
@@ -59,6 +88,22 @@ export const createProduct = async (product: Omit<Product, 'id'>): Promise<Produ
 
 export const updateProduct = async (product: Product): Promise<Product> => {
   try {
+    if (isBrowser) {
+      console.log('Browser environment, updating product in local storage');
+      // Get existing products
+      const savedProducts = localStorage.getItem('aquaProducts');
+      const products = savedProducts ? JSON.parse(savedProducts) : [];
+      
+      // Update product
+      const updatedProducts = products.map((p: Product) => 
+        p.id === product.id ? product : p
+      );
+      
+      // Save to local storage
+      localStorage.setItem('aquaProducts', JSON.stringify(updatedProducts));
+      return product;
+    }
+    
     await connectToDatabase();
     console.log('Updating product in MongoDB:', product);
     
@@ -74,6 +119,20 @@ export const updateProduct = async (product: Product): Promise<Product> => {
 
 export const deleteProduct = async (id: string): Promise<void> => {
   try {
+    if (isBrowser) {
+      console.log('Browser environment, deleting product from local storage');
+      // Get existing products
+      const savedProducts = localStorage.getItem('aquaProducts');
+      const products = savedProducts ? JSON.parse(savedProducts) : [];
+      
+      // Delete product
+      const filteredProducts = products.filter((p: Product) => p.id !== id);
+      
+      // Save to local storage
+      localStorage.setItem('aquaProducts', JSON.stringify(filteredProducts));
+      return;
+    }
+    
     await connectToDatabase();
     console.log('Deleting product from MongoDB:', id);
     

@@ -46,4 +46,15 @@ const OrderSchema = new mongoose.Schema({
   timestamps: true
 });
 
-export default mongoose.models.Order || mongoose.model('Order', OrderSchema);
+// For client-side rendering in browsers
+let Order;
+
+try {
+  // Check if mongoose.models exists before accessing it
+  Order = mongoose.models?.Order || mongoose.model('Order', OrderSchema);
+} catch (error) {
+  // If error occurs, create a new model
+  Order = mongoose.model('Order', OrderSchema);
+}
+
+export default Order;

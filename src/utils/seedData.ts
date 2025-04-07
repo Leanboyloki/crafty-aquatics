@@ -5,6 +5,14 @@ import UserModel from '@/models/User';
 
 export const seedDatabase = async () => {
   try {
+    // Check if we're in a browser environment
+    if (typeof window !== 'undefined') {
+      console.log('Browser environment detected, skipping actual database seeding');
+      // In browser environment, we don't actually seed the database
+      // We'll rely on the mocked data in ProductContext, etc.
+      return;
+    }
+
     await connectToDatabase();
     
     // Check if we already have products
