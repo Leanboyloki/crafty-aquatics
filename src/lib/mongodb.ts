@@ -17,12 +17,16 @@ if (!MONGODB_URI) {
  * We create a cached connection object to avoid creating multiple
  * connections during hot reloads in development
  */
-// Use window object for browser environment instead of global
-const globalWithMongoose = typeof window !== 'undefined' ? window : {} as any;
-let cached = globalWithMongoose.mongoose;
+// Use window object for browser environment 
+let cached = {
+  conn: null,
+  promise: null
+};
 
-if (!cached) {
-  cached = globalWithMongoose.mongoose = { conn: null, promise: null };
+// For client-side rendering, we reset the connection on each load
+// This prevents issues with browser refreshes
+if (typeof window !== 'undefined') {
+  cached = { conn: null, promise: null };
 }
 
 export async function connectToDatabase() {

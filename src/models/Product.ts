@@ -38,8 +38,15 @@ const ProductSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Check if the model exists before creating a new one
-// This is important for hot module reloading in development
-const Product = mongoose.models.Product || mongoose.model('Product', ProductSchema);
+// For client-side rendering in browsers, need to check if model exists differently
+let Product;
+
+try {
+  // Check if the model is already defined
+  Product = mongoose.models.Product || mongoose.model('Product', ProductSchema);
+} catch (error) {
+  // If model doesn't exist yet, create it
+  Product = mongoose.model('Product', ProductSchema);
+}
 
 export default Product;

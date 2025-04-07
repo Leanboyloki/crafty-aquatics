@@ -27,8 +27,15 @@ const UserSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Check if the model exists before creating a new one
-// This is important for hot module reloading in development
-const User = mongoose.models.User || mongoose.model('User', UserSchema);
+// For client-side rendering in browsers
+let User;
+
+try {
+  // Check if the model is already defined
+  User = mongoose.models.User || mongoose.model('User', UserSchema);
+} catch (error) {
+  // If model doesn't exist yet, create it
+  User = mongoose.model('User', UserSchema);
+}
 
 export default User;

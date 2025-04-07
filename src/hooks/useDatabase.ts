@@ -28,7 +28,20 @@ export const useDatabase = () => {
       }
     };
 
+    // Set a timeout to ensure we don't block rendering indefinitely
+    const timeoutId = setTimeout(() => {
+      if (isLoading) {
+        setIsLoading(false);
+        setIsInitialized(true);
+        setIsError(true);
+        toast.error("Database connection timed out. Loading app without DB connection.");
+        console.warn("Database connection timed out, continuing without DB connection");
+      }
+    }, 5000);
+
     initializeDatabase();
+
+    return () => clearTimeout(timeoutId);
   }, []);
 
   return { isInitialized, isLoading, isError };
